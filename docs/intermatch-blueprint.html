@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intermatch — AI-Powered Job Application Portal Blueprint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg-base: #090d16;
+      --bg-surface: #111827;
+      --bg-card: rgba(17, 24, 39, 0.75);
+      --bg-card-hover: rgba(30, 41, 59, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.4);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      --secondary: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-cyan: #06b6d4;
+      --badge-bg: rgba(99, 102, 241, 0.15);
+      --code-bg: #0d121f;
+      --table-stripe: rgba(255, 255, 255, 0.02);
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="light"] {
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.9);
+      --bg-card-hover: #ffffff;
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --border-accent: rgba(79, 70, 229, 0.3);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --primary: #4f46e5;
+      --primary-glow: rgba(79, 70, 229, 0.15);
+      --secondary: #7c3aed;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+      --accent-cyan: #0891b2;
+      --badge-bg: rgba(79, 70, 229, 0.1);
+      --code-bg: #f1f5f9;
+      --table-stripe: rgba(0, 0, 0, 0.02);
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 80px;
+      background-image: 
+        radial-gradient(at 90% 10%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+        radial-gradient(at 10% 90%, rgba(139, 92, 246, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* Top Navigation */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 24px;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      padding: 8px 16px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .nav-btn-active {
+      background: var(--badge-bg);
+      color: var(--primary);
+      border: 1px solid var(--border-accent);
+    }
+
+    .nav-btn-ghost {
+      color: var(--text-muted);
+      border: 1px solid transparent;
+    }
+
+    .nav-btn-ghost:hover {
+      color: var(--text-main);
+      background: var(--border-subtle);
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--border-accent);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px 0;
+    }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 44px;
+      text-align: left;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--badge-bg);
+      border: 1px solid var(--border-accent);
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--text-main) 60%, var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 840px;
+      line-height: 1.6;
+    }
+
+    /* Section Styling */
+    .section-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--badge-bg);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    /* Tables */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.94rem;
+    }
+
+    thead th {
+      background: var(--bg-surface);
+      color: var(--text-main);
+      font-weight: 700;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: top;
+      color: var(--text-muted);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background-color: var(--table-stripe);
+    }
+
+    td strong {
+      color: var(--text-main);
+    }
+
+    /* Workflow Cards */
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .workflow-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 24px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .workflow-card-candidate {
+      border-left-color: var(--accent-cyan);
+    }
+
+    .workflow-card-ml {
+      border-left-color: var(--secondary);
+    }
+
+    .workflow-card-notify {
+      border-left-color: var(--accent-emerald);
+    }
+
+    .workflow-card-agg {
+      border-left-color: var(--accent-amber);
+    }
+
+    .workflow-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .workflow-list {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .workflow-list li {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .workflow-list li strong {
+      color: var(--text-main);
+    }
+
+    .nested-list {
+      margin-top: 8px;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      list-style-type: circle;
+    }
+
+    /* Score badges */
+    .score-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-right: 6px;
+    }
+
+    .score-high {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .score-mid {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .score-low {
+      background: rgba(100, 116, 139, 0.15);
+      color: var(--text-dim);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Architecture Diagram */
+    .mermaid-wrapper {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 24px;
+      overflow-x: auto;
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    /* Build Order Timeline */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 18px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 20px 24px;
+      align-items: flex-start;
+    }
+
+    .timeline-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--badge-bg);
+      color: var(--primary);
+      border: 1px solid var(--border-accent);
+      flex-shrink: 0;
+    }
+
+    .timeline-content {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .timeline-content strong {
+      color: var(--text-main);
+    }
+
+    /* Out of scope */
+    .scope-list {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .scope-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px 18px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .scope-icon {
+      color: var(--accent-amber);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: var(--code-bg);
+      border: 1px solid var(--border-subtle);
+      color: var(--accent-cyan);
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 60px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 640px) {
+      .section-card {
+        padding: 20px;
+      }
+      .timeline-item {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .nav-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .nav-links {
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="intermatch-blueprint.html" class="brand">
+        <div class="brand-logo">⚡</div>
+        <div class="brand-title">Intermatch Docs</div>
+      </a>
+      <div class="nav-links">
+        <a href="intermatch-learning-guide.html" class="nav-btn nav-btn-ghost">📖 12-Day Guide</a>
+        <a href="intermatch-blueprint.html" class="nav-btn nav-btn-active">🚀 Blueprint</a>
+        <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme" aria-label="Toggle light/dark mode">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <div class="hero">
+      <span class="hero-badge">📐 Architecture Specification</span>
+      <h1>AI-Powered Job Application Portal — Project Blueprint</h1>
+      <p>A resume–JD matching platform with automated candidate outreach, built for a 3rd-year full-stack project with an industry-aligned, microservices-based stack.</p>
+    </div>
+
+    <!-- 1. Final Tech Stack -->
+    <section class="section-card">
+      <h2 class="section-title"><span class="section-icon">⚙️</span>1. Final Tech Stack</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>Choice</th>
+              <th>Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Frontend</td>
+              <td><strong>Next.js (App Router)</strong></td>
+              <td>Already known; industry standard; UI only — no backend logic lives here</td>
+            </tr>
+            <tr>
+              <td>Core backend (CRUD, auth, jobs, applications)</td>
+              <td><strong>Nest.js</strong></td>
+              <td>A real, separate backend service — cleaner ownership split across the 4-person team, stronger resume signal than folding logic into the frontend</td>
+            </tr>
+            <tr>
+              <td>ORM</td>
+              <td><strong>Drizzle</strong></td>
+              <td>Lighter and more SQL-first than Prisma; equally credible on a resume</td>
+            </tr>
+            <tr>
+              <td>Database</td>
+              <td><strong>PostgreSQL on Neon (or Supabase)</strong></td>
+              <td>Serverless Postgres, native Vercel integration, supports <code>pgvector</code></td>
+            </tr>
+            <tr>
+              <td>Auth</td>
+              <td><strong>Clerk</strong> or <strong>Auth.js</strong></td>
+              <td>Far less setup than a custom Auth0/RBAC build; frontend handles sign-in/sign-up, Core API verifies the session token</td>
+            </tr>
+            <tr>
+              <td>ML matching service</td>
+              <td><strong>Python + FastAPI</strong></td>
+              <td>Separate service since the ML ecosystem is Python-based</td>
+            </tr>
+            <tr>
+              <td>Embedding model</td>
+              <td><strong><code>sentence-transformers</code> (<code>all-MiniLM-L6-v2</code>)</strong></td>
+              <td>Pretrained, free, CPU-friendly, no training required</td>
+            </tr>
+            <tr>
+              <td>Vector storage</td>
+              <td><strong><code>pgvector</code> extension on the same Postgres DB</strong></td>
+              <td>Avoids adding a separate vector database</td>
+            </tr>
+            <tr>
+              <td>Skill extraction</td>
+              <td><strong>spaCy NER / curated skills list</strong></td>
+              <td>Adds an explainable "missing skills" layer on top of raw similarity</td>
+            </tr>
+            <tr>
+              <td>Automation</td>
+              <td><strong>n8n</strong> (self-hosted or n8n cloud free tier)</td>
+              <td>Orchestrates the notify-candidate workflow</td>
+            </tr>
+            <tr>
+              <td>Messaging</td>
+              <td><strong>WhatsApp Cloud API (Meta, official)</strong></td>
+              <td>Free tier, no third-party reseller needed</td>
+            </tr>
+            <tr>
+              <td>Job aggregation</td>
+              <td><strong>Adzuna API / Jooble API</strong></td>
+              <td>Legitimate, ToS-compliant alternatives to scraping LinkedIn</td>
+            </tr>
+            <tr>
+              <td>CI/CD</td>
+              <td><strong>GitHub Actions</strong></td>
+              <td>Lint/test gate before deploy (Vercel/Render auto-deploy on push regardless)</td>
+            </tr>
+            <tr>
+              <td>Deployment</td>
+              <td><strong>Vercel</strong> (Next.js frontend) + <strong>Render or Railway</strong> (Nest.js Core API, FastAPI ML service)</td>
+              <td>Each backend service deploys independently</td>
+            </tr>
+            <tr>
+              <td>Repo structure</td>
+              <td><strong>Single monorepo</strong> (<code>Intermatch/</code>) with <code>frontend</code>, <code>core-api</code>, <code>ml-service</code>, <code>automation</code> as subfolders</td>
+              <td>One shared git history, one place to fork/PR from, while still deploying each service independently via root-directory settings on Vercel/Render</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2. End-to-End Workflow -->
+    <section class="section-card">
+      <h2 class="section-title"><span class="section-icon">🔄</span>2. End-to-End Workflow (User Experience)</h2>
+      <div class="workflow-grid">
+        
+        <div class="workflow-card">
+          <h3 class="workflow-title">👔 Recruiter Side</h3>
+          <ol class="workflow-list">
+            <li>Recruiter signs up / logs in (Clerk/Auth.js, via the frontend)</li>
+            <li>Recruiter posts a job: title, description, required skills, category — sent to Core API</li>
+            <li>Job is stored in Postgres (via Drizzle) and becomes visible to matching candidates</li>
+          </ol>
+        </div>
+
+        <div class="workflow-card workflow-card-candidate">
+          <h3 class="workflow-title">👤 Candidate Side</h3>
+          <ol class="workflow-list">
+            <li>Candidate signs up and uploads a resume (PDF/DOCX) — handled by Core API</li>
+            <li>Candidate selects job categories they're interested in</li>
+            <li>Resume text is extracted (<code>pdfplumber</code> / <code>python-docx</code>) inside the ML service and stored</li>
+          </ol>
+        </div>
+
+        <div class="workflow-card workflow-card-ml">
+          <h3 class="workflow-title">🧠 Matching Engine (Background Process)</h3>
+          <ol class="workflow-list">
+            <li>For each relevant job in the candidate's chosen category, Core API calls the FastAPI ML service, which:
+              <ul class="nested-list">
+                <li>Embeds the resume text and the JD text</li>
+                <li>Computes cosine similarity (semantic match)</li>
+                <li>Extracts skills from both texts and computes skill-overlap %</li>
+                <li>Combines both into a final weighted match score</li>
+              </ul>
+            </li>
+            <li>Score is returned to Core API and written back to Postgres against that candidate–job pair</li>
+          </ol>
+        </div>
+
+        <div class="workflow-card workflow-card-notify">
+          <h3 class="workflow-title">📲 Notification Flow</h3>
+          <ol class="workflow-list">
+            <li>Core API triggers an n8n webhook when a new match score lands</li>
+            <li><span class="score-badge score-high">Score ≥ 80%</span> → WhatsApp message via Cloud API with a direct apply link</li>
+            <li><span class="score-badge score-mid">Score 50–80%</span> → WhatsApp message noting the gap, listing missing skills, encouraging upskilling, with a note they may still get shortlisted if they apply</li>
+            <li><span class="score-badge score-low">Score &lt; 50%</span> → no notification (or optional low-priority digest)</li>
+          </ol>
+        </div>
+
+        <div class="workflow-card workflow-card-agg">
+          <h3 class="workflow-title">🌐 Job Aggregation (Supplementary)</h3>
+          <ol class="workflow-list">
+            <li>n8n's own scheduler (cron node) pulls listings from Adzuna/Jooble periodically</li>
+            <li>New listings are normalized and posted into Core API, which inserts them into the same <code>jobs</code> table, tagged by source</li>
+            <li>These flow through the same matching pipeline as recruiter-posted jobs</li>
+          </ol>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. External Services Used -->
+    <section class="section-card">
+      <h2 class="section-title"><span class="section-icon">☁️</span>3. External Services Used</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Purpose</th>
+              <th>Tier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Neon / Supabase</strong></td>
+              <td>Managed Postgres + pgvector</td>
+              <td><span class="score-badge score-high">Free tier</span></td>
+            </tr>
+            <tr>
+              <td><strong>Clerk / Auth.js</strong></td>
+              <td>Authentication</td>
+              <td><span class="score-badge score-high">Free tier</span></td>
+            </tr>
+            <tr>
+              <td><strong>Vercel</strong></td>
+              <td>Next.js frontend hosting</td>
+              <td><span class="score-badge score-high">Free tier</span></td>
+            </tr>
+            <tr>
+              <td><strong>Render / Railway</strong></td>
+              <td>Nest.js Core API + FastAPI ML service hosting</td>
+              <td><span class="score-badge score-high">Free tier</span></td>
+            </tr>
+            <tr>
+              <td><strong>n8n</strong></td>
+              <td>Workflow automation</td>
+              <td><span class="score-badge score-mid">Self-hosted or free cloud tier</span></td>
+            </tr>
+            <tr>
+              <td><strong>Meta WhatsApp Cloud API</strong></td>
+              <td>Sending candidate notifications</td>
+              <td><span class="score-badge score-high">Free tier (with usage limits)</span></td>
+            </tr>
+            <tr>
+              <td><strong>Adzuna / Jooble API</strong></td>
+              <td>External job listing aggregation</td>
+              <td><span class="score-badge score-high">Free tier</span></td>
+            </tr>
+            <tr>
+              <td><strong>GitHub Actions</strong></td>
+              <td>CI (lint/test before deploy)</td>
+              <td><span class="score-badge score-high">Free for public/small private repos</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. High-Level Architecture -->
+    <section class="section-card">
+      <h2 class="section-title"><span class="section-icon">🏛️</span>4. High-Level Architecture</h2>
+      <div class="mermaid-wrapper">
+        <div class="mermaid">
+flowchart LR
+    A[Next.js Frontend] --> B[Core API - Nest.js]
+    B --> C[(Postgres - Neon)]
+    B --> D[FastAPI ML Service]
+    D --> C
+    D -->|match score| B
+    B --> E[n8n Workflow]
+    E --> F[WhatsApp Cloud API]
+    G[Adzuna / Jooble API] --> B
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Suggested Build Order -->
+    <section class="section-card">
+      <h2 class="section-title"><span class="section-icon">📅</span>5. Suggested Build Order (~1 month learning + build)</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-badge">WEEK 01</div>
+          <div class="timeline-content">
+            <strong>Frontend (Next.js) scaffold + Core API (Nest.js) scaffold</strong>, Drizzle + Neon schema, Clerk/Auth.js integration on both sides — core CRUD (jobs, users, applications)
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-badge">WEEK 02</div>
+          <div class="timeline-content">
+            <strong>FastAPI ML service + sentence-transformers + pgvector</strong> — matching endpoint, wired to Core API
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-badge">WEEK 03</div>
+          <div class="timeline-content">
+            <strong>n8n + WhatsApp Cloud API</strong> — notification workflow, triggered from Core API
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-badge">WEEK 04</div>
+          <div class="timeline-content">
+            <strong>End-to-end wiring</strong>, job aggregation pipeline, deployment (Vercel + Render), buffer for bugs
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Explicitly Out of Scope -->
+    <section class="section-card">
+      <h2 class="section-title"><span class="section-icon">🚫</span>6. Explicitly Out of Scope (Note for Report)</h2>
+      <ul class="scope-list">
+        <li class="scope-item">
+          <span class="scope-icon">ℹ️</span>
+          <div>No model training or fine-tuning — pretrained embeddings only</div>
+        </li>
+        <li class="scope-item">
+          <span class="scope-icon">ℹ️</span>
+          <div>No LLM-based scoring — kept deliberately explainable for grading/demo purposes</div>
+        </li>
+        <li class="scope-item">
+          <span class="scope-icon">ℹ️</span>
+          <div>LinkedIn is <strong>not</strong> used as a scraping source (ToS violation) — Adzuna/Jooble used instead</div>
+        </li>
+        <li class="scope-item">
+          <span class="scope-icon">💡</span>
+          <div>Both can be mentioned as "future improvements" in your project report</div>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p>Intermatch • 3rd-year Full-Stack Development Course Project • All Rights Reserved</p>
+    </footer>
+  </main>
+
+  <script>
+    // Theme toggle with persistence
+    const themeBtn = document.getElementById('themeToggle');
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem('intermatch-theme') || 'dark';
+    root.setAttribute('data-theme', savedTheme);
+    themeBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+    function initMermaid(theme) {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: theme === 'dark' ? 'dark' : 'default',
+        securityLevel: 'loose',
+        flowchart: { curve: 'basis' }
+      });
+      mermaid.run();
+    }
+
+    initMermaid(savedTheme);
+
+    themeBtn.addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('intermatch-theme', next);
+      themeBtn.textContent = next === 'dark' ? '☀️' : '🌙';
+      location.reload(); // re-renders mermaid cleanly with new theme
+    });
+  </script>
+</body>
+</html>

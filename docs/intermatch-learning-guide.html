@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intermatch — 12-Day Pre-Development Learning Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #090d16;
+      --bg-surface: #111827;
+      --bg-card: rgba(17, 24, 39, 0.75);
+      --bg-card-hover: rgba(30, 41, 59, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.4);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      --secondary: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-cyan: #06b6d4;
+      --badge-bg: rgba(99, 102, 241, 0.15);
+      --code-bg: #0d121f;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="light"] {
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.9);
+      --bg-card-hover: #ffffff;
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --border-accent: rgba(79, 70, 229, 0.3);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --primary: #4f46e5;
+      --primary-glow: rgba(79, 70, 229, 0.15);
+      --secondary: #7c3aed;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+      --accent-cyan: #0891b2;
+      --badge-bg: rgba(79, 70, 229, 0.1);
+      --code-bg: #f1f5f9;
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 80px;
+      background-image: 
+        radial-gradient(at 10% 20%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+        radial-gradient(at 90% 80%, rgba(139, 92, 246, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* Top Navigation */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 24px;
+    }
+
+    .nav-container {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      padding: 8px 16px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .nav-btn-active {
+      background: var(--badge-bg);
+      color: var(--primary);
+      border: 1px solid var(--border-accent);
+    }
+
+    .nav-btn-ghost {
+      color: var(--text-muted);
+      border: 1px solid transparent;
+    }
+
+    .nav-btn-ghost:hover {
+      color: var(--text-main);
+      background: var(--border-subtle);
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--border-accent);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 24px 0;
+    }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 40px;
+      text-align: left;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--badge-bg);
+      border: 1px solid var(--border-accent);
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--text-main) 60%, var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 800px;
+      line-height: 1.6;
+    }
+
+    /* Progress Tracker Widget */
+    .progress-widget {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 36px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .progress-stats {
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .progress-bar-track {
+      width: 100%;
+      height: 10px;
+      background: var(--code-bg);
+      border-radius: 9999px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 9999px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-tip {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* Day Cards Grid */
+    .day-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .day-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .day-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .day-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .day-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      box-shadow: 0 4px 10px var(--primary-glow);
+    }
+
+    .day-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .category-badge {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--badge-bg);
+      color: var(--primary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Checklist Items */
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid transparent;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .check-item:hover {
+      background: var(--border-subtle);
+      border-color: var(--border-subtle);
+    }
+
+    .check-item input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--text-dim);
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+      margin-top: 2px;
+      flex-shrink: 0;
+      display: grid;
+      place-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .check-item input[type="checkbox"]:checked {
+      background: var(--accent-emerald);
+      border-color: var(--accent-emerald);
+    }
+
+    .check-item input[type="checkbox"]:checked::before {
+      content: "✓";
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .check-item.completed .item-text {
+      text-decoration: line-through;
+      color: var(--text-dim);
+    }
+
+    .item-text {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    .item-text strong {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: var(--code-bg);
+      border: 1px solid var(--border-subtle);
+      color: var(--accent-cyan);
+    }
+
+    /* Reference Docs Section */
+    .docs-section {
+      margin-top: 50px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .docs-section h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .doc-link-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .doc-link-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+      color: var(--primary);
+    }
+
+    .doc-icon {
+      font-size: 1rem;
+      color: var(--text-dim);
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 60px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 640px) {
+      .day-card {
+        padding: 20px;
+      }
+      .nav-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .nav-links {
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="intermatch-blueprint.html" class="brand">
+        <div class="brand-logo">⚡</div>
+        <div class="brand-title">Intermatch Docs</div>
+      </a>
+      <div class="nav-links">
+        <a href="intermatch-learning-guide.html" class="nav-btn nav-btn-active">📖 12-Day Guide</a>
+        <a href="intermatch-blueprint.html" class="nav-btn nav-btn-ghost">🚀 Blueprint</a>
+        <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme" aria-label="Toggle light/dark mode">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <div class="hero">
+      <span class="hero-badge">🎓 Comprehensive Syllabus</span>
+      <h1>Intermatch — Pre-Development Learning Index (12 Days)</h1>
+      <p>This is an index, not a tutorial — a list of exactly what to learn each day, with enough detail to know what you're searching for. Everyone follows the same 12 days and learns each topic in their own way (docs, videos, whatever works for them).</p>
+    </div>
+
+    <!-- Progress Tracker Widget -->
+    <div class="progress-widget">
+      <div class="progress-header">
+        <span>Team Mastery Progress</span>
+        <span class="progress-stats" id="progressStats">0 / 48 topics (0%)</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-tip">💡 Click on any topic as you learn it. Your progress is automatically saved in your browser!</div>
+    </div>
+
+    <!-- Day Cards -->
+    <div class="day-grid">
+
+      <!-- Day 1 -->
+      <article class="day-card" data-day="1">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 01</span>
+            <h2 class="day-title">Git/GitHub, REST Basics, Environment Setup</h2>
+          </div>
+          <span class="category-badge">Foundation & Tooling</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t1"><label for="t1" class="item-text"><strong>Forking &amp; cloning</strong> — making your own copy of the team repo on GitHub, then pulling it to your machine</label></li>
+          <li class="check-item"><input type="checkbox" id="t2"><label for="t2" class="item-text"><strong>Branches</strong> — working on a separate line (<code>feature/xyz</code>) instead of directly on <code>main</code></label></li>
+          <li class="check-item"><input type="checkbox" id="t3"><label for="t3" class="item-text"><strong>Staging, committing, pushing</strong> — saving snapshots of your work and uploading them to your fork</label></li>
+          <li class="check-item"><input type="checkbox" id="t4"><label for="t4" class="item-text"><strong>Pull Requests (PRs)</strong> — how to formally request that your branch's changes get merged into the team's <code>main</code>, and how review/approval works</label></li>
+          <li class="check-item"><input type="checkbox" id="t5"><label for="t5" class="item-text"><strong>Syncing a fork</strong> — pulling in the team's latest merged changes before you start new work, so you're never working on stale code</label></li>
+          <li class="check-item"><input type="checkbox" id="t6"><label for="t6" class="item-text"><strong>Merge conflicts</strong> — what they look like and how to manually resolve them when two people edit the same lines</label></li>
+          <li class="check-item"><input type="checkbox" id="t7"><label for="t7" class="item-text"><strong>REST fundamentals</strong> — HTTP methods (GET/POST/PUT/DELETE), status codes (200/400/401/404/500), and what a JSON request/response body looks like</label></li>
+          <li class="check-item"><input type="checkbox" id="t8"><label for="t8" class="item-text"><strong>Environment variables</strong> — <code>.env</code> files, why secrets never get committed, and <code>.gitignore</code></label></li>
+          <li class="check-item"><input type="checkbox" id="t9"><label for="t9" class="item-text"><strong>API testing tools</strong> — Postman or Thunder Client, for hitting an endpoint and checking the response before wiring up a UI</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 2 -->
+      <article class="day-card" data-day="2">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 02</span>
+            <h2 class="day-title">Frontend — Next.js Basics</h2>
+          </div>
+          <span class="category-badge">Frontend (Next.js)</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t10"><label for="t10" class="item-text"><strong>App Router structure</strong> — how folders under <code>app/</code> map directly to URL routes</label></li>
+          <li class="check-item"><input type="checkbox" id="t11"><label for="t11" class="item-text"><strong>Server components vs. client components</strong> — which run on the server (can talk to a DB, never ship JS) vs. which run in the browser (can use state/hooks)</label></li>
+          <li class="check-item"><input type="checkbox" id="t12"><label for="t12" class="item-text"><strong>Dynamic routes</strong> — how a folder like <code>[id]</code> becomes a URL parameter (e.g. <code>/jobs/123</code>)</label></li>
+          <li class="check-item"><input type="checkbox" id="t13"><label for="t13" class="item-text"><strong>Layouts</strong> — shared UI (navbar, footer) wrapping multiple pages</label></li>
+          <li class="check-item"><input type="checkbox" id="t14"><label for="t14" class="item-text"><strong>Data fetching</strong> — pulling data into a server component and handling loading/error states</label></li>
+          <li class="check-item"><input type="checkbox" id="t15"><label for="t15" class="item-text"><strong>Tailwind CSS</strong> — utility-class styling, how it's set up in a Next.js project by default</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 3 -->
+      <article class="day-card" data-day="3">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 03</span>
+            <h2 class="day-title">Frontend — Forms, Auth, API Calls</h2>
+          </div>
+          <span class="category-badge">Frontend & Auth</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t16"><label for="t16" class="item-text"><strong>File upload forms</strong> — using <code>&lt;input type="file"&gt;</code> and <code>FormData</code> to send a resume file to a backend</label></li>
+          <li class="check-item"><input type="checkbox" id="t17"><label for="t17" class="item-text"><strong>Auth provider setup (Clerk or Auth.js)</strong> — installing it, wrapping your app so every page knows if a user is logged in</label></li>
+          <li class="check-item"><input type="checkbox" id="t18"><label for="t18" class="item-text"><strong>Protected routes</strong> — using middleware to block access to pages unless the user is authenticated</label></li>
+          <li class="check-item"><input type="checkbox" id="t19"><label for="t19" class="item-text"><strong>Sign-in/sign-up flows</strong> — the prebuilt components these providers give you, and how to customize them</label></li>
+          <li class="check-item"><input type="checkbox" id="t20"><label for="t20" class="item-text"><strong>Calling an external API from the frontend</strong> — using <code>fetch</code>, attaching an auth token to the request, handling failed requests gracefully</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 4 -->
+      <article class="day-card" data-day="4">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 04</span>
+            <h2 class="day-title">Core API — Nest.js Fundamentals</h2>
+          </div>
+          <span class="category-badge">Backend Architecture</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t21"><label for="t21" class="item-text"><strong>Modules</strong> — how Nest.js groups related code (e.g. a <code>JobsModule</code> for everything job-related)</label></li>
+          <li class="check-item"><input type="checkbox" id="t22"><label for="t22" class="item-text"><strong>Controllers</strong> — where you define routes (<code>GET /jobs</code>, <code>POST /jobs</code>) and what each one returns</label></li>
+          <li class="check-item"><input type="checkbox" id="t23"><label for="t23" class="item-text"><strong>Providers/services</strong> — where the actual business logic lives, injected into controllers rather than written inline</label></li>
+          <li class="check-item"><input type="checkbox" id="t24"><label for="t24" class="item-text"><strong>Dependency injection</strong> — Nest's core pattern for wiring services into controllers automatically</label></li>
+          <li class="check-item"><input type="checkbox" id="t25"><label for="t25" class="item-text"><strong>Project structure</strong> — how Nest.js organizes a real app (<code>app.module.ts</code>, feature modules, the <code>src/</code> layout you're already using: <code>jobs</code>, <code>candidates</code>, <code>applications</code>, <code>matches</code>, <code>auth</code>, <code>db</code>)</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 5 -->
+      <article class="day-card" data-day="5">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 05</span>
+            <h2 class="day-title">Core API — DTOs, Validation, Auth</h2>
+          </div>
+          <span class="category-badge">Backend Security</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t26"><label for="t26" class="item-text"><strong>DTOs (Data Transfer Objects)</strong> — classes that define and validate the exact shape of incoming request data</label></li>
+          <li class="check-item"><input type="checkbox" id="t27"><label for="t27" class="item-text"><strong>Validation pipes</strong> — automatically rejecting bad input before it reaches your logic</label></li>
+          <li class="check-item"><input type="checkbox" id="t28"><label for="t28" class="item-text"><strong>Guards</strong> — checking an auth token is valid before a protected route runs</label></li>
+          <li class="check-item"><input type="checkbox" id="t29"><label for="t29" class="item-text"><strong>Verifying Clerk/Auth.js tokens in Nest.js</strong> — how the backend confirms a request actually comes from a logged-in user, not just trusting the frontend</label></li>
+          <li class="check-item"><input type="checkbox" id="t30"><label for="t30" class="item-text"><strong>Structured error responses</strong> — consistent error shapes so the frontend can handle failures predictably</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 6 -->
+      <article class="day-card" data-day="6">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 06</span>
+            <h2 class="day-title">Core API — Drizzle ORM + Postgres</h2>
+          </div>
+          <span class="category-badge">Database & Vector</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t31"><label for="t31" class="item-text"><strong>Schema definition</strong> — declaring your tables (users, jobs, applications, match scores) as code</label></li>
+          <li class="check-item"><input type="checkbox" id="t32"><label for="t32" class="item-text"><strong>Migrations</strong> — generating and applying database schema changes safely</label></li>
+          <li class="check-item"><input type="checkbox" id="t33"><label for="t33" class="item-text"><strong>Basic queries</strong> — select, insert, update, delete, and how relations (foreign keys) are queried</label></li>
+          <li class="check-item"><input type="checkbox" id="t34"><label for="t34" class="item-text"><strong>Indexes</strong> — what they are and why they speed up lookups on large tables</label></li>
+          <li class="check-item"><input type="checkbox" id="t35"><label for="t35" class="item-text"><strong>The <code>pgvector</code> extension</strong> — adding a vector column to a table so you can store and search embeddings directly in Postgres</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 7 -->
+      <article class="day-card" data-day="7">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 07</span>
+            <h2 class="day-title">ML Service — Python + FastAPI Basics</h2>
+          </div>
+          <span class="category-badge">Machine Learning Service</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t36"><label for="t36" class="item-text"><strong>Virtual environments</strong> — isolating this service's Python packages from the rest of your system (venv or Poetry)</label></li>
+          <li class="check-item"><input type="checkbox" id="t37"><label for="t37" class="item-text"><strong>FastAPI routes</strong> — defining an endpoint like <code>POST /match</code></label></li>
+          <li class="check-item"><input type="checkbox" id="t38"><label for="t38" class="item-text"><strong>Pydantic models</strong> — defining the expected shape of a request body, with automatic validation</label></li>
+          <li class="check-item"><input type="checkbox" id="t39"><label for="t39" class="item-text"><strong>Text extraction</strong> — pulling raw text out of an uploaded PDF (<code>pdfplumber</code>) or DOCX (<code>python-docx</code>) file</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 8 -->
+      <article class="day-card" data-day="8">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 08</span>
+            <h2 class="day-title">ML Service — Matching Logic</h2>
+          </div>
+          <span class="category-badge">NLP & Scoring Logic</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t40"><label for="t40" class="item-text"><strong>Sentence embeddings</strong> — what they are, and using a pretrained model (<code>sentence-transformers</code>, e.g. <code>all-MiniLM-L6-v2</code>) to turn text into a vector</label></li>
+          <li class="check-item"><input type="checkbox" id="t41"><label for="t41" class="item-text"><strong>Cosine similarity</strong> — the math behind comparing two vectors, and converting the result into a 0–100% score</label></li>
+          <li class="check-item"><input type="checkbox" id="t42"><label for="t42" class="item-text"><strong>Skill/keyword extraction</strong> — using spaCy to pull out named skills or terms from resume and JD text</label></li>
+          <li class="check-item"><input type="checkbox" id="t43"><label for="t43" class="item-text"><strong>Combining scores</strong> — weighting semantic similarity and skill overlap together into one final match percentage, so the score is explainable, not a black box</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 9 -->
+      <article class="day-card" data-day="9">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 09</span>
+            <h2 class="day-title">Automation — n8n + WhatsApp</h2>
+          </div>
+          <span class="category-badge">Workflow Automation</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t44"><label for="t44" class="item-text"><strong>n8n workflow basics</strong> — nodes, connecting them, and running a workflow manually</label></li>
+          <li class="check-item"><input type="checkbox" id="t45"><label for="t45" class="item-text"><strong>Webhook triggers</strong> — how another service (like Core API) can kick off an n8n workflow via an HTTP call</label></li>
+          <li class="check-item"><input type="checkbox" id="t46"><label for="t46" class="item-text"><strong>Meta WhatsApp Cloud API setup</strong> — creating a developer app, getting a test phone number and access token</label></li>
+          <li class="check-item"><input type="checkbox" id="t47"><label for="t47" class="item-text"><strong>Sending a templated message</strong> — the required request format for WhatsApp's API</label></li>
+          <li class="check-item"><input type="checkbox" id="t48"><label for="t48" class="item-text"><strong>Branching logic</strong> — routing to a different message template depending on whether the score is ≥80% or 50–80%</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 10 -->
+      <article class="day-card" data-day="10">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 10</span>
+            <h2 class="day-title">Automation — Job Aggregation</h2>
+          </div>
+          <span class="category-badge">External Integrations</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t49"><label for="t49" class="item-text"><strong>Adzuna/Jooble API basics</strong> — getting API credentials, required query parameters, and what the response looks like</label></li>
+          <li class="check-item"><input type="checkbox" id="t50"><label for="t50" class="item-text"><strong>Scheduled triggers (cron)</strong> — running a fetch job automatically every few hours in n8n</label></li>
+          <li class="check-item"><input type="checkbox" id="t51"><label for="t51" class="item-text"><strong>Data normalization</strong> — mapping the external API's field names onto your own <code>jobs</code> table structure before inserting</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 11 -->
+      <article class="day-card" data-day="11">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 11</span>
+            <h2 class="day-title">Cross-Service Communication</h2>
+          </div>
+          <span class="category-badge">Microservices Plumbing</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t52"><label for="t52" class="item-text"><strong>Designing a REST contract</strong> — agreeing on exact request/response JSON shapes before writing integration code, not after</label></li>
+          <li class="check-item"><input type="checkbox" id="t53"><label for="t53" class="item-text"><strong>Service-to-service calls</strong> — how Core API calls the ML service, and how it triggers n8n via webhook</label></li>
+          <li class="check-item"><input type="checkbox" id="t54"><label for="t54" class="item-text"><strong>Handling failures across services</strong> — what happens if the ML service is down when Core API calls it, timeouts, retries</label></li>
+          <li class="check-item"><input type="checkbox" id="t55"><label for="t55" class="item-text"><strong>Environment-specific URLs</strong> — how each service knows the others' addresses in local dev vs. staging vs. production</label></li>
+        </ul>
+      </article>
+
+      <!-- Day 12 -->
+      <article class="day-card" data-day="12">
+        <div class="day-header">
+          <div class="day-title-wrap">
+            <span class="day-pill">DAY 12</span>
+            <h2 class="day-title">Full Integration</h2>
+          </div>
+          <span class="category-badge">Production Readiness</span>
+        </div>
+        <ul class="checklist">
+          <li class="check-item"><input type="checkbox" id="t56"><label for="t56" class="item-text"><strong>Confirming API contracts</strong> — walking through the agreed shapes from Day 11 against what's actually built</label></li>
+          <li class="check-item"><input type="checkbox" id="t57"><label for="t57" class="item-text"><strong>Git branching flow</strong> — agreeing on <code>main → staging → production</code> and who's allowed to merge into each</label></li>
+          <li class="check-item"><input type="checkbox" id="t58"><label for="t58" class="item-text"><strong>End-to-end dry run</strong> — one fake resume + one fake JD through the whole pipeline, ending in a real WhatsApp test message</label></li>
+          <li class="check-item"><input type="checkbox" id="t59"><label for="t59" class="item-text"><strong>Debrief</strong> — writing down anything that broke or was unclear, to seed Week 1's task list</label></li>
+        </ul>
+      </article>
+
+    </div>
+
+    <!-- Reference Docs Section -->
+    <section class="docs-section">
+      <h2>📚 Official Reference Docs</h2>
+      <div class="docs-grid">
+        <a href="https://nextjs.org/docs" target="_blank" rel="noopener" class="doc-link-card"><span>Next.js Docs</span><span class="doc-icon">↗</span></a>
+        <a href="https://tailwindcss.com/docs" target="_blank" rel="noopener" class="doc-link-card"><span>Tailwind CSS</span><span class="doc-icon">↗</span></a>
+        <a href="https://clerk.com/docs" target="_blank" rel="noopener" class="doc-link-card"><span>Clerk Auth</span><span class="doc-icon">↗</span></a>
+        <a href="https://docs.nestjs.com" target="_blank" rel="noopener" class="doc-link-card"><span>Nest.js Docs</span><span class="doc-icon">↗</span></a>
+        <a href="https://orm.drizzle.team" target="_blank" rel="noopener" class="doc-link-card"><span>Drizzle ORM</span><span class="doc-icon">↗</span></a>
+        <a href="https://fastapi.tiangolo.com" target="_blank" rel="noopener" class="doc-link-card"><span>FastAPI Docs</span><span class="doc-icon">↗</span></a>
+        <a href="https://sbert.net" target="_blank" rel="noopener" class="doc-link-card"><span>Sentence Transformers</span><span class="doc-icon">↗</span></a>
+        <a href="https://spacy.io/usage" target="_blank" rel="noopener" class="doc-link-card"><span>spaCy Usage</span><span class="doc-icon">↗</span></a>
+        <a href="https://docs.n8n.io" target="_blank" rel="noopener" class="doc-link-card"><span>n8n Workflow Docs</span><span class="doc-icon">↗</span></a>
+        <a href="https://developers.facebook.com/docs/whatsapp" target="_blank" rel="noopener" class="doc-link-card"><span>WhatsApp Cloud API</span><span class="doc-icon">↗</span></a>
+        <a href="https://developer.adzuna.com" target="_blank" rel="noopener" class="doc-link-card"><span>Adzuna API</span><span class="doc-icon">↗</span></a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Intermatch • 3rd-year Full-Stack Development Course Project • All Rights Reserved</p>
+    </footer>
+  </main>
+
+  <script>
+    // Theme toggle with persistence
+    const themeBtn = document.getElementById('themeToggle');
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem('intermatch-theme') || 'dark';
+    root.setAttribute('data-theme', savedTheme);
+    themeBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+    themeBtn.addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('intermatch-theme', next);
+      themeBtn.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Checkbox progress tracker with localStorage persistence
+    const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+    const progressBar = document.getElementById('progressBar');
+    const progressStats = document.getElementById('progressStats');
+    const STORAGE_KEY = 'intermatch-learning-progress';
+
+    function loadProgress() {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      checkboxes.forEach(cb => {
+        if (saved[cb.id]) {
+          cb.checked = true;
+          cb.closest('.check-item').classList.add('completed');
+        }
+      });
+      updateStats();
+    }
+
+    function updateStats() {
+      const total = checkboxes.length;
+      let checkedCount = 0;
+      const state = {};
+      checkboxes.forEach(cb => {
+        state[cb.id] = cb.checked;
+        if (cb.checked) {
+          checkedCount++;
+          cb.closest('.check-item').classList.add('completed');
+        } else {
+          cb.closest('.check-item').classList.remove('completed');
+        }
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      const pct = Math.round((checkedCount / total) * 100);
+      progressBar.style.width = pct + '%';
+      progressStats.textContent = `${checkedCount} / ${total} topics (${pct}%)`;
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', updateStats);
+    });
+
+    loadProgress();
+  </script>
+</body>
+</html>
